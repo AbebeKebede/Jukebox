@@ -32,7 +32,7 @@ namespace Jukebox.Controllers
             });
 
             var playlistItemsRequest = youtubeService.PlaylistItems.List("snippet");
-            playlistItemsRequest.PlaylistId = "PLEneMfPMjHGdiFsa1CqzG_g7Q9vR4iQKG";//channelId;
+            playlistItemsRequest.PlaylistId = "channelId";//channelId;
             playlistItemsRequest.MaxResults = 50; // Adjust as needed
             
 
