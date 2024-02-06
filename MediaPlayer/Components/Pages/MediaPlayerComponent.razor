@@ -1,0 +1,36 @@
+﻿
+<!-- YouTubePlayer.razor -->
+@inject IJSRuntime JSRuntime
+<h3>YouTube Video Player</h3>
+
+@* <iframe src="https://www.youtube.com/embed/@VideoId?autoplay=1" frameborder="0" allowfullscreen></iframe> *@
+<div id="MediaPlayer"></div>
+
+
+@code {
+    // Replace with the actual YouTube video ID
+    private string VideoId = "VideoId";
+    private string apiKey = "apiKey";
+    private bool hasRendered;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Initialize the YouTube IFrame Player
+            await JSRuntime.InvokeVoidAsync("initializeYouTubePlayer", "MediaPlayer", VideoId, apiKey);
+            hasRendered = true;
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+    protected override Task OnInitializedAsync()
+    {
+        // Initialize the YouTube IFrame Player
+        JSRuntime.InvokeVoidAsync("initializeYouTubePlayer", "MediaPlayer", VideoId, apiKey);
+        hasRendered = true;
+        StateHasChanged();
+        return base.OnInitializedAsync();
+    }
+
+}

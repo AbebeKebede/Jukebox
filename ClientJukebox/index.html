@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Jukebox</title>
+  <style>
+    /* Add your styles here */
+  </style>
+</head>
+<body>
+
+  <h1>Electric Jukebox</h1>
+
+  <div id="playlist-container">
+    <!-- Playlist will be dynamically populated here -->
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Fetch the playlist from the server
+      fetch('https://localhost:7103/api/Jukebox')
+        .then(response => response.json())
+        .then(playlist => displayPlaylist(playlist))
+        .catch(error => console.error('Error fetching playlist:', error));
+    });
+
+    function displayPlaylist(playlist) {
+      const playlistContainer = document.getElementById('playlist-container');
+
+      // Clear previous content
+      playlistContainer.innerHTML = '';
+      
+      // Display each song in the playlist
+      playlist.forEach(song => {
+        const songElement = document.createElement('div');
+        songElement.innerHTML = `
+        <img src="${song.thumbnails}" width="150" height="160"/>
+          <p>${song.title} - Votes: ${song.votes}</p>
+          
+          <a href=${song.videoURL} target="framename">Open Video</a> <br>
+          
+          <button onclick="vote('${song.key}')">Vote</button>
+          <hr>
+        `;
+        playlistContainer.appendChild(songElement);
+      });
+    }
+
+    function vote(songKey) {
+      // Send a vote to the server
+      fetch(`https://localhost:7103/api/Jukebox/${songKey}/vote`, { method: 'POST' })
+        .then(response => response.json())
+        .then(updatedSong => {
+          // Update the local playlist with the new vote count
+          const updatedPlaylist = window.playlist.map(song => {
+            return song.id === updatedSong.id ? updatedSong : song;
+          });
+
+          // Update the UI with the updated playlist
+          displayPlaylist(updatedPlaylist);
+        })
+        .catch(error => console.error('Error voting for song:', error));
+    }
+  </script>
+
+</body>
+</html>
