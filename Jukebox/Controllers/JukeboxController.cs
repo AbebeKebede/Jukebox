@@ -22,8 +22,8 @@ namespace Jukebox.Controllers
         private static void RetrieveYouTubeMusicList()
         {
             // Replace "YOUR_API_KEY" with your actual YouTube Data API key
-            string apiKey = "AIzaSyC2WwnNZfFI2Cke-LZs0a3iEQhT6XW4vC8";
-            string channelId = "UCMVt-Q1oDAJJ5fgc0oS0tzw"; //UCMVt-Q1oDAJJ5fgc0oS0tzw UC_x5XG1OV2P6uZZ5FSM9TtwReplace with your desired channel ID
+            string apiKey = "apiKey";
+            string channelId = "channelId"; //Replace with your desired channel ID
 
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
